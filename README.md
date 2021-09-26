@@ -1,0 +1,45 @@
+# xstate-sync-to-context
+
+## Installation
+
+`yarn add xstate-sync-to-context`
+
+## Usage
+
+This small lib brings the `syncToContext` proposal to XState. This allows you to sync 'props' into context in a predictable, concise way:
+
+```ts
+import { useMachine } from 'xstate-sync-to-context';
+import { machine } from './machine';
+
+// useQuery, for instance from react-query or useSWR
+const [result] = useQuery();
+
+const [state] = useMachine(machine, {
+  syncToContext: {
+    data: result.data,
+  },
+});
+```
+
+`syncToContext` updates your context via an event: `xstate.update.syncToContext`. You can listen to the event manually to configure its behaviour:
+
+```ts
+import { createMachine } from 'xstate';
+
+const machine = createMachine({
+  on: {
+    'xstate.update.syncToContext': {
+      actions: (context, event) => {
+        console.log(event.props);
+      },
+    },
+  },
+});
+```
+
+> You can import anything that `@xstate/react` exports from `xstate-sync-to-context`, it's safe to replace the export name.
+
+## Proposal
+
+If you like this proposal, [check out the PR to XState Core](https://github.com/statelyai/xstate/pull/2683) if you want to bring it into core.
