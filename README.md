@@ -43,3 +43,26 @@ const machine = createMachine({
 ## Proposal
 
 If you like this proposal, [check out the PR to XState Core](https://github.com/statelyai/xstate/pull/2683) if you want to bring it into core.
+
+## FAQ's
+
+### Fixing 'maximum update depth exceeded'
+
+If you see this error, use a useMemo on the data you're syncing to context:
+
+```ts
+import { useMachine } from 'xstate-sync-to-context';
+import { machine } from './machine';
+
+// useQuery, for instance from react-query or useSWR
+const [result] = useQuery();
+
+const [state] = useMachine(machine, {
+  syncToContext: useMemo(
+    () => ({
+      data: result.data,
+    }),
+    [result.data]
+  ),
+});
+```
