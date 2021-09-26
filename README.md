@@ -38,7 +38,7 @@ const machine = createMachine({
 });
 ```
 
-> You can import anything that `@xstate/react` exports from `xstate-sync-to-context`, it's safe to replace the export name.
+> You can only import `useMachine` and `useInterpret` from `xstate-sync-to-context` - other imports need to be grabbed from `@xstate/react`
 
 ## Proposal
 

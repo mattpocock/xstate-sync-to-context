@@ -110,5 +110,3 @@ export const useMachine = <
 
   return [state, send, service];
 };
-
-export * from '@xstate/react';
